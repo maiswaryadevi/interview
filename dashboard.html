@@ -42,7 +42,9 @@ tr:nth-child(even) {
 </body>
 <script type="text/javascript">
     if(localStorage.getItem("username")!==null){ 
-      var apiUrl = 'https://userapi2.free.beeceptor.com/userlist';
+      var apiUrl = 'https://userapi4.free.beeceptor.com/userlist';
+
+
    
       fetch(apiUrl).then(response =>{
          return response.json();
@@ -64,14 +66,16 @@ function show(datas) {
   var max = datas.data.length;
     let tab = 
         '<tr>'
-          +'<th>Name</th>'
+        +'<th>Id</th>'
+          +'<th>Roll No</th>'
           +'<th>First Name</th>'
           +'<th>Last Name</th>'
           +'<th>Details</th>'
          +'</tr>';
         for (let r of datas.data) {
         tab += '<tr>' 
-        +'<td>'+r.name+' </td>'
+        +'<td>'+r.id+' </td>'
+        +'<td>'+r.RollNo+' </td>'
         +'<td>'+r.firstName+'</td>'
         +'<td>'+r.lastName+'</td>'
          +'<td><a href="userdetail.html?id='+r.id+'&max='+max+'">View</a></td>'
