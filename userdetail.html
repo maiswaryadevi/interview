@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.prev-btn,.next-btn{
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  opacity: 0.9;
+}
+.bashboard-btn{
+  background-color: #4063c5;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  opacity: 0.9;
+  float: right;
+}
+.next-btn{
+  float: right;
+}
+.hide{
+  display: none;
+}
+.display: {
+  display: inline-block;
+}
+</style>
+</head>
+<body>
+
+<div id="message"><h2>User Details</h2></div>
+<a href="dashboard.html" id="bashboard-btn" class="bashboard-btn">Back to Dashboard</a>
+
+<div id="user_details">
+ 
+</div>
+<div class="btn">
+  <a href="#" id="prev-btn" class="prev-btn hide">Previous</a>
+  <a href="#" id="next-btn" class="next-btn hide">Next</a>
+  
+</div>
+</body>
+<script type="text/javascript">
+   if(localStorage.getItem("username")!==null){ 
+      const urlParams = new URLSearchParams(window.location.search);
+      var myParam = urlParams.get('id'); 
+      var maxuser = urlParams.get('max'); 
+      myParam = parseInt(myParam);
+      maxuser = parseInt(maxuser);
+      document.getElementById("prev-btn").href = 'userdetail.html?id='+(myParam-1)+'&max='+maxuser;
+      document.getElementById("next-btn").href = 'userdetail.html?id='+(myParam+1)+'&max='+maxuser;
+      var apiUrl = 'https://userapi2.free.beeceptor.com/user'+myParam;
+      console.log(myParam);
+      console.log(maxuser);
+      if(myParam==1){
+          document.getElementById("prev-btn").style.display = "none";
+          document.getElementById("next-btn").style.display = "inline-block";
+      } else if(myParam==maxuser){
+          document.getElementById("prev-btn").style.display = "inline-block";
+          document.getElementById("next-btn").style.display = "none";
+      } else if(myParam < maxuser){
+          document.getElementById("prev-btn").style.display = "inline-block";
+          document.getElementById("next-btn").style.display = "inline-block";
+      } else {
+          document.getElementById("prev-btn").style.display = "none";
+          document.getElementById("next-btn").style.display = "none";
+      }
+     
+      fetch(apiUrl).then(response =>{
+         return response.json();
+      }).then(users=>{
+        show(users);
+      });
+    } else {
+      document.getElementById("bashboard-btn").style.display = "none";
+      document.getElementById("message").innerHTML = "<h2>Session expired. <a href='login.html'>Click here</a> to login </h2>";
+    }
+  
+function show(datas) {
+    var tab = '<table>';
+    var data_details = datas.data[0];
+    console.log(data_details)
+    for (const [key, value] of Object.entries(data_details)) {
+      
+      if(key=='more'){
+         for (const [key1, value1] of Object.entries(value)) {
+             tab += '<tr><td>'+key1+'</td><td>'+value1+'</td></tr>';
+         }
+         
+      } else {
+        tab += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+      }
+    }
+  tab +='</table>';
+  document.getElementById("user_details").innerHTML = tab;
+}
+
+
+</script>
+</html>

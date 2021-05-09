@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.logout-btn{
+  background-color: #4063c5;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  opacity: 0.9;
+  float: right;
+}
+</style>
+</head>
+<body>
+
+
+<a href="logout.html" class="logout-btn" id="logout-btn">Logout</a>
+<div id="message"><h2>User List</h2></div>
+<table id="users">
+ 
+</table>
+
+</body>
+<script type="text/javascript">
+    if(localStorage.getItem("username")!==null){ 
+      var apiUrl = 'https://userapi2.free.beeceptor.com/userlist';
+   
+      fetch(apiUrl).then(response =>{
+         return response.json();
+      }).then(users=>{
+        show(users);
+      });
+      document.getElementById("logout-btn").style.display = "inline-block";
+    } else {
+      document.getElementById("logout-btn").style.display = "none";
+      document.getElementById("message").innerHTML = "<h2>Session expired. <a href='login.html'>Click here</a> to login </h2>";
+
+    }
+
+   
+  
+  
+  
+function show(datas) {
+  var max = datas.data.length;
+    let tab = 
+        '<tr>'
+          +'<th>Name</th>'
+          +'<th>First Name</th>'
+          +'<th>Last Name</th>'
+          +'<th>Details</th>'
+         +'</tr>';
+        for (let r of datas.data) {
+        tab += '<tr>' 
+        +'<td>'+r.name+' </td>'
+        +'<td>'+r.firstName+'</td>'
+        +'<td>'+r.lastName+'</td>'
+         +'<td><a href="userdetail.html?id='+r.id+'&max='+max+'">View</a></td>'
+        +'</tr>';
+    }
+    document.getElementById("users").innerHTML = tab;
+}
+
+</script>
+</html>

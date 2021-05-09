@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #00000059;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text],input[type=email], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=email]:focus,input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit button */
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity: 1;
+}
+
+a {
+  color: dodgerblue;
+}
+
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+#message p{
+	color: red;
+}
+</style>
+</head>
+<body>
+
+<form  action="#" id="form"  method="post">
+  <div class="container">
+    <h1>Register</h1>
+  	<div id="message"></div>
+    
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+
+    <label for="name"><b>User name</b></label>
+    <input type="text" placeholder="Enter Name" name="name" id="name">
+
+    
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" id="psw">
+
+    <label for="psw-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat">
+   <button type="button" class="registerbtn" onclick="Onsubmit()">Register</button>
+  </div>
+  
+  <div class="container signin">
+    <p>Already have an account? <a href="login.html">Sign in</a>.</p>
+  </div>
+</form>
+<script type="text/javascript">
+
+	function Onsubmit(event){
+   
+		document.getElementById('message').innerHTML ='';
+    var name = document.getElementById("name").value;
+    var password = document.getElementById("psw").value;
+    var repeat_password = document.getElementById("psw-repeat").value;
+
+    if (name === ''  || password==='' || repeat_password==='') {
+      alert("Please fill all fields");
+      return false;
+    }  else if(password!=repeat_password){
+      alert("Password does not match");
+      return false;
+      
+    } else {
+      a = new Array();
+      if(localStorage.getItem("all_users")!==null){
+         a=JSON.parse((localStorage.getItem("all_users")));  
+      }
+     
+      a.push({name: name, password: password});
+      localStorage.setItem('all_users',JSON.stringify(a));
+      
+      document.getElementById("name").value = '';
+      document.getElementById("psw").value = '';
+      document.getElementById("psw-repeat").value = '';
+      document.getElementById('message').innerHTML ='<p>Registered Successfully</p>';
+    }
+
+	}
+</script>
+</body>
+</html>
